@@ -1,14 +1,11 @@
 name: Pipeline Inteligente
 
 on:
-  # Regra 1: execução manual
   workflow_dispatch:
 
-  # Regra 2: rodar todo dia às 02:00
   schedule:
     - cron: "0 2 * * *"
 
-  # Regra 3 + 4: push controlado
   push:
     branches:
       - 'feature/*'
@@ -21,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Gerar relatórios
@@ -30,7 +27,7 @@ jobs:
           echo "Relatório 1 OK" > saida_build/relatorio1.txt
           echo "Relatório 2 OK" > saida_build/relatorio2.txt
 
-      - name: Upload de artefatos
+      - name: Upload artefato
         uses: actions/upload-artifact@v4
         with:
           name: meus-relatorios-oficiais
@@ -41,7 +38,7 @@ jobs:
     needs: job_gerador
 
     steps:
-      - name: Baixar artefatos
+      - name: Download artefato
         uses: actions/download-artifact@v4
         with:
           name: meus-relatorios-oficiais
